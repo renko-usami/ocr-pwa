@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0f172a" />
+  <meta name="description" content="Android 화면 캡처를 공유받아 OpenRouter 비전 모델로 OCR을 수행하고 클립보드에 복사하는 PWA" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+  <link rel="stylesheet" href="/styles.css" />
+  <title>OCR PWA · OpenRouter</title>
+</head>
+<body>
+  <main class="app">
+    <header class="app__header">
+      <h1 class="app__title">📷 OCR PWA</h1>
+      <p class="app__subtitle">Android 캡처 공유 → OpenRouter 비전 OCR → 클립보드 복사</p>
+    </header>
+
+    <section class="card" id="settingsCard">
+      <h2 class="card__title">⚙️ 설정</h2>
+      <label class="field">
+        <span class="field__label">OpenRouter API Key</span>
+        <input id="apiKey" type="password" class="field__input" placeholder="sk-or-v1-..." autocomplete="off" spellcheck="false" />
+      </label>
+      <label class="field">
+        <span class="field__label">비전 모델</span>
+        <input id="model" type="text" class="field__input" placeholder="google/gemma-3-27b-it" value="google/gemma-3-27b-it" spellcheck="false" />
+      </label>
+      <label class="field field--inline">
+        <input id="autoCopy" type="checkbox" checked />
+        <span>OCR 완료 후 자동으로 클립보드에 복사</span>
+      </label>
+      <div class="field__hint">
+        API Key는 이 기기의 localStorage에만 저장됩니다. 모델은 OpenRouter에서 지원하는 비전(vision) 모델을 입력하세요.
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 class="card__title">🖼️ 이미지</h2>
+      <div class="dropzone" id="dropzone">
+        <div class="dropzone__inner">
+          <div class="dropzone__icon">📤</div>
+          <div class="dropzone__text">이미지를 여기에 드롭하거나 <strong>탭하여 선택</strong></div>
+          <div class="dropzone__sub">Android에서 캡처 후 "공유" 메뉴로도 이 앱에 보낼 수 있습니다.</div>
+        </div>
+        <input id="fileInput" type="file" accept="image/*" hidden />
+      </div>
+      <div id="previewWrap" class="preview" hidden>
+        <img id="preview" class="preview__img" alt="선택된 이미지" />
+        <button id="clearBtn" class="btn btn--ghost" type="button">이미지 제거</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 class="card__title">🔍 OCR 결과</h2>
+      <div class="actions">
+        <button id="ocrBtn" class="btn btn--primary" type="button" disabled>OCR 실행</button>
+        <button id="copyBtn" class="btn" type="button" disabled>클립보드에 복사</button>
+      </div>
+      <pre id="result" class="result" aria-live="polite">여기에 OCR 결과가 표시됩니다.</pre>
+      <div id="status" class="status"></div>
+    </section>
+
+    <footer class="app__footer">
+      <span id="installHint"></span>
+      <button id="installBtn" class="btn btn--ghost" type="button" hidden>홈 화면에 설치</button>
+    </footer>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>
